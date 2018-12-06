@@ -15,7 +15,7 @@ class RockDB:
 
     def __init__(self):
         try:
-            self.conn = psycopg2.connect("dbname='postgres' host='localhost' user ='postgres' password='SK10909090'")
+            self.conn = psycopg2.connect("-")
         except psycopg2.Error as err:
             print("Connection error: {}".format(err))
         try:

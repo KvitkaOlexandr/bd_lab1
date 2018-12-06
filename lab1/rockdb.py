@@ -10,7 +10,7 @@ from structures import Song
 
 
 class RockDB:
-    conn = psycopg2.connect("dbname='postgres' host='localhost' user ='postgres' password='SK10909090'")
+    conn = psycopg2.connect("")
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     def __init__(self):

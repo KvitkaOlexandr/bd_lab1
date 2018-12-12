@@ -1,0 +1,62 @@
+CREATE FUNCTION getReward() RETURNS SETOF band AS
+$BODY$
+DECLARE
+    r band%rowtype;
+
+BEGIN
+    FOR r IN SELECT * FROM band
+    LOOP
+        IF r.reward_existence = false THEN
+            r.reward_existence = true;
+        END IF;
+        RETURN NEXT r;
+    END LOOP;
+    RETURN;
+END
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT * FROM getReward()
+
+_________________________________________
+CREATE FUNCTION checkAlbumsNumber() RETURNS trigger AS $func$
+    BEGIN
+        IF NEW.album_number < 0 THEN
+            RAISE EXCEPTION 'number of albums cant be lower than one';
+        END IF;
+
+        RETURN NEW;
+    END;
+$func$ LANGUAGE plpgsql;
+
+CREATE TRIGGER al_num BEFORE INSERT OR UPDATE ON band
+    FOR EACH ROW EXECUTE PROCEDURE checkAlbumsNumber();
+
+________________________
+SELECT * FROM band;
+
+
+SELECT * FROM band;
+
+_________________________
+INSERT INTO band (id, name, genre, album_number, reward_existence, country) VALUES ('6666', 'test', 'test', '1', False, 'test');
+
+
+UPDATE band
+SET name = 'update test'
+WHERE id = '6666';
+
+
+DELETE FROM band WHERE id = '6666'
+______________________________
+
+BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ; SELECT name FROM band WHERE name ~ '^[0-9\.]+$';
+
+
+COMMIT;
+
+
+INSERT INTO band (name) VALUES ('6666');
+
+
+DELETE FROM band WHERE title ~ '^[0-9\.]+$';
